@@ -1,23 +1,22 @@
 from flask import Flask, redirect, request
+import os
 import time
 
 app = Flask(__name__)
 
+LOG_PATH = "/tmp/clicks.txt"
+
+# Dosya varsa dokunma, yoksa oluştur
+if not os.path.exists(LOG_PATH):
+    with open(LOG_PATH, "w") as f:
+        f.write("Click Logs\n")
+
 @app.route("/")
 def home():
-    return '''
-    <html>
-        <body>
-            <h2>Hoş geldiniz!</h2>
-            <p><a href="/click">🔗 Tıklamak için buraya basın</a></p>
-        </body>
-    </html>
-    '''
-
-@app.route("/click")
-def click():
-    with open("clicks.txt", "a") as f:
-        f.write(f"{request.remote_addr} - {time.ctime()}\n")
+    log_line = f"{request.remote_addr} - {time.ctime()}\n"
+    with open(LOG_PATH, "a") as f:
+        f.write(log_line)
+    print(log_line.strip())  # Render log ekranında görelim
     return redirect("https://google.com", code=302)
 
 if __name__ == "__main__":
