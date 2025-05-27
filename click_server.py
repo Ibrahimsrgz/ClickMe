@@ -16,10 +16,10 @@ import time
 
 app = Flask(__name__)
 
-@app.route("/", defaults={"number": None})
-@app.route("/number", defaults={"number": None})
-@app.route("/number=<int:number>")
-def handle_request(number):
+@app.route("/", defaults={"kullanici": None})
+@app.route("/kullanici", defaults={"kullanici": None})
+@app.route("/kullanici=<kullanici>")
+def handle_request(kullanici):
     return redirect("https://google.com", code=302)
 
 if __name__ == "__main__":
